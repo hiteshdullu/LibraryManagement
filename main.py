@@ -53,8 +53,8 @@ def get_book(book_id):
     return Book.books[book_id]
 
 def search_books(book_name=None, author=None):
-    books = [book for book in Book.books if (book_name and book.book_name == book_name) or (author and book.author == author)]
-    return [book.book_name for book in books]
+    books = [Book.books[book_id] for book_id in Book.books if (book_name and book_name in Book.books[book_id].book_name) or (author and author in Book.books[book_id].author)]
+    return [[book.book_name, book.status] for book in books]
 
 def issue_book(book_id, user_id):
     book = Book.books[book_id]
@@ -83,16 +83,25 @@ def return_book(issue_id):
 
 book1 = add_book("Ikigai", "Hector Garcia", 2016)
 book2 = add_book("Atomic Habits", "James Clear", 2018)
-add_book("Save The Cat!", "Blake Snyder", 2005)
+book3 = add_book("Save The Cat!", "Blake Snyder", 2005)
 
 user1 = register_user("hiteshdullu", "hiteshdullu@gmail.com")
-user2 = register_user("anuradhadullu", "anuradhadullu@gmail.com")
+user2 = register_user("tolkein", "tolkein@gmail.com")
 
 issue1 = issue_book(user1.user_id, book1.book_id)
 print(issue1.__dict__)
 
+issue2 = issue_book(user1.user_id, book1.book_id)
+print(issue2)
+
+books_by_hector = search_books(author="Hector")
+print(books_by_hector)
+
 return1 = return_book(issue1.issue_id)
 print(return1.__dict__)
+
+books_by_hector = search_books(author="Hector")
+print(books_by_hector)
 
 
 
